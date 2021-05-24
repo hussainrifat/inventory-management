@@ -28,28 +28,45 @@
                 <tr>
                   <th scope="col">SL No</th>
                   <th scope="col">Category Name</th>
+                  <th scope="col">User</th>
+                  <th scope="col">Created</th>
+                  <th scope="col">Update</th>
+                  <th scope="col">Delete</th>
+
                 </tr>
               </thead>
               <tbody>
 
-                  @php( $i=1)
+                  {{-- @php( $i=1) --}}
                   @foreach($category as $cat)
                 <tr>
-                  <th scope="row">{{$i++}}</th>
+                  <th scope="row">{{$category->firstItem()+$loop->index}}</th>
                   <td>{{$cat->category_name}}</td>
+                  <td>{{$cat->user->name}}</td>
+
+                  @if($cat->created_at == NULL)
+                  <span class="text-danger">No Date Is Set</span>
+                  @else
+                  <td>{{$cat->created_at->diffforHumans()}}</td>
+                  @endif
+                  <td><a href="{{url('category/edit/'.$cat->id)}}" class="btn btn-info">Edit</a></td> 
+                  <td><a href="{{url('category/delete/'.$cat->id)}}" class="btn btn-danger">Delete</a></td> 
+
                 </tr>
 
                 @endforeach
            
               </tbody>
             </table>
+
+            {{$category->links()}}
             </div>
         
     
   
 
           </div>
-            </div>
+        </div>
 
 
      <div class="col-md-4">
@@ -79,8 +96,57 @@
       </div>
 
 
+
           </div>
+  
+
+
+    <div class="container">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header"> Restore Category</div>
+          <div class="card-body">
+                
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">SL No</th>
+                <th scope="col">Category Name</th>
+                <th scope="col">Restore</th>
+                <th scope="col">Permanent Delete</th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+                @foreach($trash as $trash)
+              <tr>
+                <th scope="row">{{$category->firstItem()+$loop->index}}</th>
+                <td>{{$trash->category_name}}</td>
+                <td><a href="{{url('category/restore/'.$trash->id)}}" class="btn btn-info">Restore</a></td> 
+                <td><a href="{{url('category/pdelete/'.$trash->id)}}" class="btn btn-danger">Delete</a></td> 
+
+              </tr>
+
+              @endforeach
+         
+            </tbody>
+          </table>
+
+          {{$category->links()}}
+          </div>
+      
+  
+
+
         </div>
+      </div>
     </div>
+  </div>
+
+    </div>
+
+
+    
     
 </x-app-layout>
